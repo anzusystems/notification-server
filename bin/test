@@ -1,0 +1,13 @@
+#!/bin/bash
+# Script used to run tests inside the docker container
+
+PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")"/.. && pwd)"
+cd "$PROJECT_ROOT" || exit 1
+
+if [ -f /.dockerenv ]; then
+    echo "[INFO] Running Yarn test"
+    yarn test
+    exit
+fi
+
+bin/docker-compose exec app bash -c \'bin/test\'

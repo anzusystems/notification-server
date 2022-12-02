@@ -1,0 +1,120 @@
+#!/bin/bash
+# Script used to run node server in the application docker container according to specified arguments
+
+PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")"/.. && pwd)"
+ARGS="$*"
+RUN_YARN_OPERATION=""
+RUN_YARN_STOP=false
+RUN_YARN_INSTALL=true
+RUN_YARN_MODE="foreground"
+RUN_YARN_MODE_BACKGROUND_ARGS=""
+
+cd "${PROJECT_ROOT}" || exit 1
+
+function help() {
+    echo -en "$(printf %q "${BASH_SOURCE[0]}") [OPERATION] [OPTIONS]...
+    \nScript used to run node server in the application docker container according to specified arguments
+
+    Operations:
+        dev          Start dev server
+        watch        Start dev server with watch file
+        prod         Start prod server
+        stop         Stop all node processes
+
+    Options:
+        --no-install (Optional) Run yarn server without 'yarn install'
+        --background (Optional) Run yarn server on background and log to var/log/dev.log or var/log/prod.log
+
+    Examples:
+        $(printf %q "${BASH_SOURCE[0]}") dev --no-install --background
+        $(printf %q "${BASH_SOURCE[0]}") watch --no-install --background
+        $(printf %q "${BASH_SOURCE[0]}") prod --background
+        $(printf %q "${BASH_SOURCE[0]}") stop
+    \n"
+}
+
+function yarn_run() {
+    RUN_YARN_OPERATION="$1"
+    rm -f "/var/www/html/var/log/${RUN_YARN_OPERATION}.log"
+    tail -F "/var/www/html/var/log/${RUN_YARN_OPERATION}.log" 2>/dev/null &
+    yarn "${RUN_YARN_OPERATION}" 2>>"/var/www/html/var/log/${RUN_YARN_OPERATION}.log"
+}
+
+# Go through all command line arguments and setup variables accordingly
+while [ "$#" -gt 0 ]; do
+    case $1 in
+    dev)
+        RUN_YARN_OPERATION="dev"
+        shift 1
+        continue
+        ;;
+    watch)
+        RUN_YARN_OPERATION="watch"
+        shift 1
+        continue
+        ;;
+    prod)
+        RUN_YARN_OPERATION="prod"
+        shift 1
+        continue
+        ;;
+    stop)
+        RUN_YARN_OPERATION="stop"
+        RUN_YARN_STOP=true
+        shift 1
+        break
+        ;;
+    --no-install)
+        RUN_YARN_INSTALL=false
+        shift 1
+        continue
+        ;;
+    --background)
+        RUN_YARN_MODE="background"
+        RUN_YARN_MODE_BACKGROUND_ARGS="-d"
+        shift 1
+        continue
+        ;;
+    -h | --help)
+        help
+        exit
+        ;;
+    *)
+        echo "[WARN] Unknown command line switch: $1"
+        shift 1
+        ;;
+    esac
+done
+
+if [ -z ${RUN_YARN_OPERATION} ]; then
+    echo "[ERROR] Invalid operation, only dev|watch|prod|stop are available" >&2
+    help
+    exit 1
+fi
+
+if [ -f /.dockerenv ]; then
+    if ${RUN_YARN_STOP}; then
+        echo "[INFO] Stopping all node processes"
+        if supervisorctl status "node-server" | grep -q RUNNING; then
+            supervisorctl stop "node-server"
+        fi
+        pkill node
+        exit
+    fi
+
+    if ${RUN_YARN_INSTALL}; then
+        echo "[INFO] Running yarn install"
+        yarn install
+    fi
+
+    echo "[INFO] Running ${RUN_YARN_OPERATION} server in ${RUN_YARN_MODE} mode"
+    mkdir -p var/log
+    if [ "${RUN_YARN_MODE}" == "foreground" ]; then
+        yarn_run "${RUN_YARN_OPERATION}"
+        exit
+    fi
+    yarn_run "${RUN_YARN_OPERATION}" &
+    exit
+fi
+
+bin/docker-compose exec ${RUN_YARN_MODE_BACKGROUND_ARGS} app bash -c \'bin/run "${ARGS}"\'

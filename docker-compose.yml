@@ -1,0 +1,40 @@
+services:
+  app:
+    build:
+      args:
+        - DOCKER_USER=${DOCKER_USER:-user}
+        - DOCKER_USER_ID=${DOCKER_USER_ID:-1000}
+        - DOCKER_GROUP_ID=${DOCKER_GROUP_ID:-1000}
+      context: .
+      dockerfile: docker/app/local/Dockerfile
+    environment:
+      - VIRTUAL_HOST=notification-server.anzusystems.localhost
+      - VIRTUAL_PORT=8080
+    env_file:
+      - .env.docker.dist
+      - .env.docker.local
+    volumes:
+      - ".:/var/www/html:cached"
+    ports:
+      - ${NGINX_PORT:-8490}:8080
+      - ${NGINX_UPSTREAM_WEBSOCKET_PORT:-3410}:3005
+    hostname: notification-server.anzusystems.localhost
+    networks:
+      anzusystems_network:
+        aliases:
+          - notification-server
+
+  pubsub:
+    build:
+      context: docker/pubsub
+    external_links:
+      - local-proxy:notification-server.anzusystems.localhost
+    ports:
+      - ${PUBSUB_DOCKER_PORT:-8438}:8681
+    hostname: pubsub
+    networks:
+      - anzusystems_network
+
+networks:
+  anzusystems_network:
+    external: true
