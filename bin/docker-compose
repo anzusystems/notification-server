@@ -31,9 +31,9 @@ esac
 # Setup docker for the current project
 docker_project_setup
 
-if ${DOCKER_START_LOCAL_PROXY}; then
+if ${DOCKER_START_NGINX_PROXY}; then
     DOCKER_COMPOSE_FILES=("-f docker-compose.yml")
-    DOCKER_COMPOSE_FILES+=("-f docker-compose-local-proxy.yml")
+    DOCKER_COMPOSE_FILES+=("-f docker-compose-nginx-proxy.yml")
     DOCKER_COMPOSE_OVERRIDE="$(ls docker-compose.override.y*ml 2> /dev/null)"
     if [ -n "${DOCKER_COMPOSE_OVERRIDE}" ]; then
         DOCKER_COMPOSE_FILES+=("-f ${DOCKER_COMPOSE_OVERRIDE}")

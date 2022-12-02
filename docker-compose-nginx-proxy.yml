@@ -1,8 +1,8 @@
 services:
-  local-proxy:
+  nginx-proxy:
     image: nginxproxy/nginx-proxy
     volumes:
-      - ./docker/local-proxy/my_proxy.conf:/etc/nginx/conf.d/my_proxy.conf:ro
+      - ./docker/nginx-proxy/my_proxy.conf:/etc/nginx/conf.d/my_proxy.conf:ro
       - /var/run/docker.sock:/tmp/docker.sock:ro
     ports:
       - ${NGINX_PROXY_HTTP_PORT:-80}:80
