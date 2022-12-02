@@ -1,0 +1,40 @@
+name: AnzuSystems Notification-Server by Petitpress.sk CI
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        node-version:
+          - '18'
+        platform:
+          - ubuntu-latest
+
+    name: Node ${{ matrix.php-version }} on ${{ matrix.platform }}
+    runs-on: ${{ matrix.platform }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup Node
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'yarn'
+          cache-dependency-path: 'yarn.lock'
+
+      - name: Install dependencies
+        run: yarn install --immutable
+
+      - name: Run Yarn Build and checks
+        run: yarn production
+
+      - name: Run Security check
+        run: yarn npm audit
+
+      - name: Run Yarn Tests
+        run: yarn test

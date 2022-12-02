@@ -25,7 +25,7 @@ describe('server/websocket-server test', () => {
       socketClient = new WebSocketClient(`ws://localhost:${Config.getWebSocketServerPort()}/ws`, {
         headers: {
           Origin: Config.getWebSocketServerCors(),
-          Cookie: `anz_pub=${jwtToken.toString().slice(0, Math.max(0, lastDotPos))}; anz_sec=${jwtToken
+          Cookie: `anz_jp=${jwtToken.toString().slice(0, Math.max(0, lastDotPos))}; anz_js=${jwtToken
             .toString()
             .slice(lastDotPos + 1)}`,
         },

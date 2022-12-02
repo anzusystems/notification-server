@@ -1,0 +1,24 @@
+#!/bin/bash
+# Docker container start script
+set -e
+
+cd /var/www/html || exit 1
+
+mkdir -p var/log
+rm -f \
+    var/log/node_server.log \
+    var/log/node_server_error.log
+
+(
+    if ${DOCKER_NODE_AUTOSTART}; then
+        echo "[INFO] Starting installation and build"
+        yarn install
+        yarn run build
+        echo "[INFO] Starting node server"
+        supervisorctl start node-server
+        exit
+    fi
+) 2>>var/log/node_server_error.log 1>>var/log/node_server.log &
+
+echo "[INFO] Start supervisord"
+supervisord
