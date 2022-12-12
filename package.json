@@ -6,8 +6,10 @@
   "license": "Apache-2.0",
   "author": "AnzuSystems",
   "contributors": [
-    "Ronald Marfoldi",
-    "Lubomir Stanko"
+    {
+      "name": "AnzuSystems Community",
+      "homepage": "https://github.com/orgs/anzusystems/people"
+    }
   ],
   "main": "dist/index.js",
   "scripts": {
