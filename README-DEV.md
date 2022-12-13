@@ -1,19 +1,23 @@
-Development on AnzuSystems Notification-Server by Petitpress.sk
+Development on AnzuSystems Notification-Server by Petit Press a.s. (www.sme.sk)
 =====
 
 Simple guide on how to develop on the project, run tests, etc.
-
-[[_TOC_]]
 
 ---
 
 # Installation
 
-## 1. Clone the repository
+## 1. Start Core-DAM containers
+
+Start Core-DAM docker containers if not started yet - pubsub and nginx-proxy services are used from that project.
+
+See [the official Core-DAM Development documentation][core-dam-dev-docu] on how to start Core-DAM containers.
+
+## 2. Clone the repository
 
     git clone https://github.com/anzusystems/notification-server.git
 
-## 2. Start containers
+## 3. Start containers
 
 Start project docker containers:
 
@@ -24,19 +28,19 @@ Arguments:
 - `--build` - Build all images to run fresh docker containers
 - `-d` - Run docker containers in the detached mode as background processes
 
-## 3. (Optional) Run dev watch node server
+## 4. (Optional) Run dev watch node server
 
 By default the `docker-compose` command will autostart node server `yarn dev` with logs in `var/log/node-server.log` file.
 
-_Hint: You can disable node server autostart with variable `DOCKER_NODE_AUTOSTART=false` in `.env.docker.local`_
+_Hint: You can disable node server autostart with variable `DOCKER_NODE_AUTOSTART=false` in `.env.docker.local`. You have to restart the docker-compose to apply the change._
 
-### 3.a. (Optional) Stop all running node servers
+### 4.a. (Optional) Stop all running node servers
 
 You must stop the running node server with the command:
 
     bin/run stop
 
-### 3.b. (Optional) Start dev watch
+### 4.b. (Optional) Start dev watch
 
 Run `watch` node server (See below in the command description for more command line options):
 
@@ -95,5 +99,5 @@ Script used to run tests inside the docker container:
 
     bin/test
 
-
+[core-dam-dev-docu]: https://github.com/anzusystems/core-dam/blob/main/README-DEV.md
 [docker-compose-overview]: https://docs.docker.com/compose/reference/overview

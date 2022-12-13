@@ -1,7 +1,5 @@
 FROM node:18
 
-LABEL maintainer="Lubomir Stanko <lubomir.stanko@petitpress.sk>"
-
 # ----------------------------------------------------------------------------------------------------------------------
 # ENVIRONMENT VARIABLES
 # ----------------------------------------------------------------------------------------------------------------------
@@ -11,15 +9,15 @@ ARG DOCKER_GROUP_ID
 # Versions
 # Nginx version
 ENV NGINX_VERSION=1.22.1 \
-    NGINX_NJS_VERSION=0.7.8 \
+    NGINX_NJS_VERSION=0.7.9 \
     NGINX_PKG_RELEASE=1~bullseye \
 # Supervisor version
     SUPERVISOR_VERSION=4.2.2 \
     SUPERVISOR_PKG_RELEASE=2 \
 # NPM version
-    NPM_VERSION=9.0.1 \
+    NPM_VERSION=9.2.0 \
 # Yarn version
-    DOCKER_YARN_VERSION=3.2.4 \
+    DOCKER_YARN_VERSION=3.3.0 \
     DOCKER_YARN_PLUGIN_OUTDATED=3.1.0
 # Common environment variables
 ENV CONTAINER_STOP_LOG_FILE="/var/www/html/var/log/container_stop.log" \

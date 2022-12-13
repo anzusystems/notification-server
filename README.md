@@ -1,4 +1,4 @@
-AnzuSystems Notification Server by Petitpress.sk
+AnzuSystems Notification-Server by Petit Press a.s. (www.sme.sk)
 =====
 
 Provides WebSocket functionality among Anzusystems' projects.
@@ -12,17 +12,17 @@ Notification Server is a simple WebSocket server which requires only these techn
 * Users externally authenticated with a [JWT](https://jwt.io/) stored in cookies.
   * note: Notification Server only validates token according a public certificated.
 
-Notification Server supports horizontal scaling by creating a Pub/Sub subscription for each running instance.  
+Notification Server supports horizontal scaling by creating a Pub/Sub subscription for each running instance.
 
 ## Pushing messages to Notification Server
 To send a [PubsubMessage](https://cloud.google.com/pubsub/docs/reference/rest/v1/PubsubMessage) you must define following fields:
  * **attributes.targetSsoUserIds** - array of user ids which should receive a message
  * **attributes.eventName** - string of an event name
- * **data** (optional) - any string (e.g. serialized json) which will be sent to target sso user ids 
+ * **data** (optional) - any string (e.g. serialized json) which will be sent to target sso user ids
 
 ## Configuration
 Configure these environment variables:
-* **SSO_JWT_COOKIES** - array of cookies names where is a JWT stored. It might contain only one cookie name, but for security purpose it's recommended to split the token into two parts: 
+* **SSO_JWT_COOKIES** - array of cookies names where is a JWT stored. It might contain only one cookie name, but for security purpose it's recommended to split the token into two parts:
   * _header_ and _payload_ into not http-only cookie
   * _signature_ into http- only cookie
 * **SSO_JWT_ALGORITHM** - the algorithm used to encrypt a JWT (e.g. ES256)

@@ -24,17 +24,6 @@ services:
         aliases:
           - notification-server
 
-  pubsub:
-    build:
-      context: docker/pubsub
-    external_links:
-      - local-proxy:notification-server.anzusystems.localhost
-    ports:
-      - ${PUBSUB_DOCKER_PORT:-8438}:8681
-    hostname: pubsub
-    networks:
-      - anzusystems_network
-
 networks:
   anzusystems_network:
     external: true

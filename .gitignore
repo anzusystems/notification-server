@@ -36,7 +36,7 @@ yarn-error.log*
 # Docker
 .docker-sync*
 .docker-compose-host
-docker-compose.override.y*ml
+docker-compose.override.y*ml*
 
 # Exclusions
 !.gitkeep

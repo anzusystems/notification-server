@@ -17,6 +17,9 @@ cd "${PROJECT_ROOT}" || exit 1
 # shellcheck disable=SC1091
 . ./bin/docker-libfunctions
 
+# Setup docker for the current project
+docker_project_setup
+
 # Customize docker commands with our own added functionality
 case ${COMPOSE_CMD} in
 "up")
@@ -28,19 +31,7 @@ case ${COMPOSE_CMD} in
 *) ;;
 esac
 
-# Setup docker for the current project
-docker_project_setup
-
-if ${DOCKER_START_NGINX_PROXY}; then
-    DOCKER_COMPOSE_FILES=("-f docker-compose.yml")
-    DOCKER_COMPOSE_FILES+=("-f docker-compose-nginx-proxy.yml")
-    DOCKER_COMPOSE_OVERRIDE="$(ls docker-compose.override.y*ml 2> /dev/null)"
-    if [ -n "${DOCKER_COMPOSE_OVERRIDE}" ]; then
-        DOCKER_COMPOSE_FILES+=("-f ${DOCKER_COMPOSE_OVERRIDE}")
-    fi
-fi
-
-CMD="docker compose --env-file ${ENV_DOCKER_FILE} ${DOCKER_COMPOSE_FILES[*]} $*"
+CMD="docker compose --env-file ${ENV_DOCKER_FILE} $*"
 echo_debug "Whole command: '${CMD}'"
 eval "${CMD}"
 
