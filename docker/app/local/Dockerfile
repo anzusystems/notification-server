@@ -1,4 +1,4 @@
-FROM node:18
+FROM node:18-bookworm-slim
 
 # ----------------------------------------------------------------------------------------------------------------------
 # ENVIRONMENT VARIABLES
@@ -10,15 +10,15 @@ ARG DOCKER_GROUP_ID
 # Nginx version
 ENV NGINX_VERSION=1.24.0 \
     NGINX_NJS_VERSION=0.7.12 \
-    NGINX_PKG_RELEASE=1~bullseye \
+    NGINX_PKG_RELEASE=1~bookworm \
 # Supervisor version
-    SUPERVISOR_VERSION=4.2.2 \
-    SUPERVISOR_PKG_RELEASE=2 \
+    SUPERVISOR_VERSION=4.2.5 \
+    SUPERVISOR_PKG_RELEASE=1 \
 # NPM version
-    NPM_VERSION=9.6.4 \
+    NPM_VERSION=9.7.2 \
 # Yarn version
-    DOCKER_YARN_VERSION=3.5.0 \
-    DOCKER_YARN_PLUGIN_OUTDATED=3.2.3
+    DOCKER_YARN_VERSION=3.6.0 \
+    DOCKER_YARN_PLUGIN_OUTDATED=3.2.4
 # Common environment variables
 ENV CONTAINER_STOP_LOG_FILE="/var/www/html/var/log/container_stop.log" \
     COREPACK_HOME="/usr/lib/node/corepack" \
