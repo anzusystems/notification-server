@@ -6,14 +6,14 @@ on:
       - main
 
 env:
-  YARN_VERSION: '3.2.4'
+  YARN_VERSION: '4.0.0'
 
 jobs:
   build:
     strategy:
       matrix:
         node-version:
-          - '18'
+          - '20'
         platform:
           - ubuntu-latest
 

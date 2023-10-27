@@ -36,7 +36,7 @@ function help() {
 function yarn_run() {
     RUN_YARN_OPERATION="$1"
     rm -f "/var/www/html/var/log/${RUN_YARN_OPERATION}.log"
-    tail -F "/var/www/html/var/log/${RUN_YARN_OPERATION}.log" 2>/dev/null &
+    tail -n 0 -F "/var/www/html/var/log/${RUN_YARN_OPERATION}.log" 2>/dev/null &
     yarn "${RUN_YARN_OPERATION}" 2>>"/var/www/html/var/log/${RUN_YARN_OPERATION}.log"
 }
 
@@ -93,12 +93,12 @@ if [ -z ${RUN_YARN_OPERATION} ]; then
 fi
 
 if [ -f /.dockerenv ]; then
+    echo "[INFO] Stopping all node processes"
+    if supervisorctl status "node-server" | grep -q RUNNING; then
+        supervisorctl stop "node-server"
+    fi
+    pkill node
     if ${RUN_YARN_STOP}; then
-        echo "[INFO] Stopping all node processes"
-        if supervisorctl status "node-server" | grep -q RUNNING; then
-            supervisorctl stop "node-server"
-        fi
-        pkill node
         exit
     fi
 
