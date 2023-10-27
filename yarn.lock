@@ -2254,10 +2254,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"dotenv@npm:*, dotenv@npm:^16.0.1":
+"dotenv@npm:*":
   version: 16.0.1
   resolution: "dotenv@npm:16.0.1"
   checksum: 8afd5d776ea6968f5c28ca374ddb1fe6a7afabe062d32354478e6ea0fe8da341945a3da71defe513403623fa6871ac880d1d100bb08f80be1ae170e99e1b9293
+  languageName: node
+  linkType: hard
+
+"dotenv@npm:^16.3.1":
+  version: 16.3.1
+  resolution: "dotenv@npm:16.3.1"
+  checksum: b95ff1bbe624ead85a3cd70dbd827e8e06d5f05f716f2d0cbc476532d54c7c9469c3bc4dd93ea519f6ad711cb522c00ac9a62b6eb340d5affae8008facc3fbd7
   languageName: node
   linkType: hard
 
@@ -4589,7 +4596,7 @@ __metadata:
     "@typescript-eslint/eslint-plugin": "npm:latest"
     "@typescript-eslint/parser": "npm:^5.31.0"
     cookies: "npm:^0.8.0"
-    dotenv: "npm:^16.0.1"
+    dotenv: "npm:^16.3.1"
     eslint: "npm:^8.21.0"
     eslint-config-prettier: "npm:^8.5.0"
     eslint-plugin-prettier: "npm:^4.2.1"
