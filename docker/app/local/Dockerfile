@@ -17,7 +17,7 @@ ENV NGINX_VERSION=1.24.0 \
 # NPM version
     NPM_VERSION=10.2.1 \
 # Yarn version
-    DOCKER_YARN_VERSION=4.0.0
+    DOCKER_YARN_VERSION=4.0.1
 # Common environment variables
 ENV CONTAINER_STOP_LOG_FILE="/var/www/html/var/log/container_stop.log" \
     COREPACK_HOME="/usr/lib/node/corepack" \
