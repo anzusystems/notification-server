@@ -8,7 +8,7 @@ services:
       context: .
       dockerfile: docker/app/local/Dockerfile
     environment:
-      - VIRTUAL_HOST=notification-server.anzusystems.localhost
+      - VIRTUAL_HOST=notification-server.anzusystems.local
       - VIRTUAL_PORT=8080
     env_file:
       - .env.docker.dist
@@ -18,7 +18,7 @@ services:
     ports:
       - ${NGINX_PORT:-8490}:8080
       - ${NGINX_UPSTREAM_WEBSOCKET_PORT:-3410}:3005
-    hostname: notification-server.anzusystems.localhost
+    hostname: notification-server.anzusystems.local
     networks:
       anzusystems_network:
         aliases:
