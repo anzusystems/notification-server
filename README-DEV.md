@@ -28,7 +28,7 @@ Arguments:
 - `--build` - Build all images to run fresh docker containers
 - `-d` - Run docker containers in the detached mode as background processes
 
-### 3. Add local domain to hosts
+### 4. Add local domain to hosts
 
 Add this entry to your hosts:
 
