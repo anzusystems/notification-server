@@ -5,15 +5,12 @@ on:
     branches:
       - main
 
-env:
-  YARN_VERSION: '3.2.4'
-
 jobs:
   build:
     strategy:
       matrix:
         node-version:
-          - '18'
+          - '20'
         platform:
           - ubuntu-latest
 

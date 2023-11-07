@@ -1,5 +1,5 @@
 #!/bin/bash
-# Script used to run node server in the application docker container according to specified arguments
+# Script used to run node dev or prod server in the application container
 
 PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")"/.. && pwd)"
 ARGS="$*"
@@ -13,7 +13,7 @@ cd "${PROJECT_ROOT}" || exit 1
 
 function help() {
     echo -en "$(printf %q "${BASH_SOURCE[0]}") [OPERATION] [OPTIONS]...
-    \nScript used to run node server in the application docker container according to specified arguments
+    \nScript used to run node dev or prod server in the application container
 
     Operations:
         dev          Start dev server
@@ -36,7 +36,7 @@ function help() {
 function yarn_run() {
     RUN_YARN_OPERATION="$1"
     rm -f "/var/www/html/var/log/${RUN_YARN_OPERATION}.log"
-    tail -F "/var/www/html/var/log/${RUN_YARN_OPERATION}.log" 2>/dev/null &
+    tail -n 0 -F "/var/www/html/var/log/${RUN_YARN_OPERATION}.log" 2>/dev/null &
     yarn "${RUN_YARN_OPERATION}" 2>>"/var/www/html/var/log/${RUN_YARN_OPERATION}.log"
 }
 
@@ -93,12 +93,12 @@ if [ -z ${RUN_YARN_OPERATION} ]; then
 fi
 
 if [ -f /.dockerenv ]; then
+    echo "[INFO] Stopping all node processes"
+    if supervisorctl status "node-server" | grep -q RUNNING; then
+        supervisorctl stop "node-server"
+    fi
+    pkill node
     if ${RUN_YARN_STOP}; then
-        echo "[INFO] Stopping all node processes"
-        if supervisorctl status "node-server" | grep -q RUNNING; then
-            supervisorctl stop "node-server"
-        fi
-        pkill node
         exit
     fi
 

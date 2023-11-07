@@ -28,19 +28,33 @@ Arguments:
 - `--build` - Build all images to run fresh docker containers
 - `-d` - Run docker containers in the detached mode as background processes
 
-## 4. (Optional) Run dev watch node server
+### 4. Add local domain to hosts
+
+Add this entry to your hosts:
+
+    127.0.0.1   notification-server.anzusystems.local
+
+- Linux/Mac location:
+
+  `/etc/hosts`
+
+- Windows location
+
+  `C:\Windows\System32\drivers\etc\hosts`
+
+## 5. (Optional) Run dev watch node server
 
 By default the `docker-compose` command will autostart node server `yarn dev` with logs in `var/log/node-server.log` file.
 
 _Hint: You can disable node server autostart with variable `DOCKER_NODE_AUTOSTART=false` in `.env.docker.local`. You have to restart the docker-compose to apply the change._
 
-### 4.a. (Optional) Stop all running node servers
+### 5.a. (Optional) Stop all running node servers
 
 You must stop the running node server with the command:
 
     bin/run stop
 
-### 4.b. (Optional) Start dev watch
+### 5.b. (Optional) Start dev watch
 
 Run `watch` node server (See below in the command description for more command line options):
 

@@ -5,8 +5,10 @@
 # GIT files
 .git
 
+# Managed by yarn
+.yarn
+
 # Ignore copy of prebuilt files and folders in to the docker container
 node_modules
-.yarn
 dist
 var
