@@ -38,9 +38,11 @@ export class WebsocketServer {
 
     this.httpServer.on('upgrade', (request: IncomingMessage, socket: stream.Duplex, head: Buffer) => {
       try {
-        const userToken = verifyAuthorization(request)
+        const userToken = verifyAuthorization(request, this.appLogger)
         request.ssoUserId = userToken.sub
-      } catch {
+      } catch (error) {
+        this.appLogger.warn('Unauthorized attempt to connect.', error)
+
         socket.write('HTTP/1.1 401 Unauthorized\r\n\r\n')
         socket.destroy()
 
