@@ -4,6 +4,7 @@ import {NotificationPubSub} from './pubsub/notification-pub-sub'
 import AppLogger from './logger/app-logger'
 import {Container} from 'typedi'
 import {WebsocketServer} from './server/websocket-server'
+import process from 'process'
 
 declare module 'ws' {
   interface WebSocket {
