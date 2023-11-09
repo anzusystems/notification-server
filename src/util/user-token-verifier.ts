@@ -19,5 +19,6 @@ export function verifyAuthorization(request: IncomingMessage, logger: AppLogger)
 
   return jwt.verify(jwtRaw, Config.getJwtPublicKey(), {
     algorithms: [Config.getJwtAlgorithm()],
+    allowInvalidAsymmetricKeyTypes: true
   }) as IUserToken
 }
