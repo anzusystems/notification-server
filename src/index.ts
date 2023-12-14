@@ -4,9 +4,10 @@ import {NotificationPubSub} from './pubsub/notification-pub-sub'
 import AppLogger from './logger/app-logger'
 import {Container} from 'typedi'
 import {WebsocketServer} from './server/websocket-server'
+import ws from 'ws'
 
 declare module 'ws' {
-  interface WebSocket {
+  export interface WebSocket extends ws {
     isAlive: boolean
     ssoUserId: string
   }

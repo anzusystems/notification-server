@@ -7,6 +7,8 @@ import {UserConnections} from '../model/user-connections'
 import AppLogger from '../logger/app-logger'
 import {Config} from '../config/config'
 
+// todo, better types - remove as
+
 @Service()
 export class WebsocketServer {
   private heartBeatInterval: ReturnType<typeof setInterval> | undefined
@@ -50,13 +52,14 @@ export class WebsocketServer {
       }
 
       wss.handleUpgrade(request, socket, head, (ws) => {
-        ws.ssoUserId = request.ssoUserId
-        userConnections.add(ws)
-        wss.emit('connection', ws, request)
+        const cws = ws as WebSocket.WebSocket
+        cws.ssoUserId = request.ssoUserId
+        userConnections.add(cws)
+        wss.emit('connection', cws, request)
       })
     })
 
-    wss.on('connection', function connection(ws) {
+    wss.on('connection', function connection(ws: WebSocket.WebSocket) {
       ws.isAlive = true
       ws.on('pong', () => (ws.isAlive = true))
       ws.on('close', () => userConnections.remove(ws))
@@ -64,17 +67,18 @@ export class WebsocketServer {
 
     this.heartBeatInterval = setInterval(function ping() {
       for (const ws of wss.clients) {
-        if (ws.isAlive === false) {
-          userConnections.remove(ws)
+        const cws = ws as WebSocket.WebSocket
+        if (cws.isAlive === false) {
+          userConnections.remove(cws)
           ws.terminate()
 
           continue
         }
 
-        ws.isAlive = false
-        ws.ping(null, false, (error) => {
+        cws.isAlive = false
+        cws.ping(null, false, (error) => {
           if (error) {
-            userConnections.remove(ws)
+            userConnections.remove(cws)
             ws.terminate()
           }
         })
