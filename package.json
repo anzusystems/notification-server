@@ -21,7 +21,7 @@
     "lint:prettier:fix": "prettier -w \"./src/**/*.{ts,js}\"",
     "lint:tsc": "tsc --noEmit -p tsconfig.json --composite false",
     "clean": "rimraf dist",
-    "build": "yarn clean && yarn lint --fix && tsc",
+    "build": "yarn clean && yarn lint && tsc",
     "production": "yarn build",
     "prod": "NODE_OPTIONS=\"--max-old-space-size=200\" node dist/index.js --max-http-header-size=16000",
     "dev": "TS_NODE=true NODE_OPTIONS=\"-r ts-node/register\" node src/index.ts --max-http-header-size=16000",
