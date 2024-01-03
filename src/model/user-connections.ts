@@ -1,7 +1,7 @@
-import {Service} from 'typedi'
-import {WebSocket} from 'ws'
+import { Service } from 'typedi'
+import { WebSocket } from 'ws'
 
-@Service({global: true})
+@Service({ global: true })
 export class UserConnections {
   private readonly users: Map<string, Set<WebSocket>> = new Map<string, Set<WebSocket>>()
 

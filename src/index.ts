@@ -1,9 +1,9 @@
 import 'reflect-metadata'
-import {Config} from './config/config'
-import {NotificationPubSub} from './pubsub/notification-pub-sub'
+import { Config } from './config/config'
+import { NotificationPubSub } from './pubsub/notification-pub-sub'
 import AppLogger from './logger/app-logger'
-import {Container} from 'typedi'
-import {WebsocketServer} from './server/websocket-server'
+import { Container } from 'typedi'
+import { WebsocketServer } from './server/websocket-server'
 import ws from 'ws'
 
 declare module 'ws' {

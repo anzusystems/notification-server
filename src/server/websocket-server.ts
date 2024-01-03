@@ -1,11 +1,11 @@
-import http, {IncomingMessage, Server} from 'http'
+import http, { IncomingMessage, Server } from 'http'
 import WebSocket from 'ws'
 import stream from 'node:stream'
-import {verifyAuthorization} from '../util/user-token-verifier'
-import {Inject, Service} from 'typedi'
-import {UserConnections} from '../model/user-connections'
+import { verifyAuthorization } from '../util/user-token-verifier'
+import { Inject, Service } from 'typedi'
+import { UserConnections } from '../model/user-connections'
 import AppLogger from '../logger/app-logger'
-import {Config} from '../config/config'
+import { Config } from '../config/config'
 
 // todo, better types - remove as
 
@@ -24,7 +24,7 @@ export class WebsocketServer {
       noServer: true,
       path: '/ws',
       perMessageDeflate: true,
-      verifyClient: ({origin}, callback) => {
+      verifyClient: ({ origin }, callback) => {
         const isAllowed = new RegExp(Config.getWebSocketServerCors()).test(origin)
         if (!isAllowed) {
           appLogger.warn(`Request from origin ${origin} blocked`)

@@ -1,7 +1,7 @@
-import {WebSocket} from 'ws'
-import {WebsocketServer} from '../../src/server/websocket-server'
-import {UserConnections} from '../../src/model/user-connections'
-import {Config} from '../../src/config/config'
+import { WebSocket } from 'ws'
+import { WebsocketServer } from '../../src/server/websocket-server'
+import { UserConnections } from '../../src/model/user-connections'
+import { Config } from '../../src/config/config'
 import AppLogger from '../../src/logger/app-logger'
 import jwt from 'jsonwebtoken'
 
@@ -17,7 +17,7 @@ describe('server/websocket-server test', () => {
 
   async function createClientSocket(): Promise<string> {
     return new Promise((resolve) => {
-      const jwtToken = jwt.sign({sub: '123'}, Config.getJwtPrivateKey(), {
+      const jwtToken = jwt.sign({ sub: '123' }, Config.getJwtPrivateKey(), {
         algorithm: Config.getJwtAlgorithm(),
       })
       const lastDotPos = jwtToken.toString().lastIndexOf('.')
