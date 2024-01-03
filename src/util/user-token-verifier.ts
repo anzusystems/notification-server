@@ -1,8 +1,8 @@
 import jwt from 'jsonwebtoken'
-import {Config} from '../config/config'
+import { Config } from '../config/config'
 import Cookies from 'cookies'
-import {IncomingMessage, ServerResponse} from 'http'
-import {IUserToken} from '../model/user-token'
+import { IncomingMessage, ServerResponse } from 'http'
+import { IUserToken } from '../model/user-token'
 import AppLogger from '../logger/app-logger'
 
 export function verifyAuthorization(request: IncomingMessage, logger: AppLogger): IUserToken {
@@ -10,7 +10,7 @@ export function verifyAuthorization(request: IncomingMessage, logger: AppLogger)
   const jwtRaw = Config.getJwtCookies()
     .map((cookieName) => cookies.get(cookieName))
     .join('.')
-  const jwtPartsCount = jwtRaw.replace(/[^.]/gi, '').length
+  const jwtPartsCount = jwtRaw.replaceAll(/[^.]/gi, '').length
   if (!jwtRaw || jwtPartsCount !== 2) {
     throw new Error('Invalid JWT token')
   }
@@ -19,6 +19,6 @@ export function verifyAuthorization(request: IncomingMessage, logger: AppLogger)
 
   return jwt.verify(jwtRaw, Config.getJwtPublicKey(), {
     algorithms: [Config.getJwtAlgorithm()],
-    allowInvalidAsymmetricKeyTypes: true
+    allowInvalidAsymmetricKeyTypes: true,
   }) as IUserToken
 }

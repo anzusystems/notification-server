@@ -1,5 +1,5 @@
-import winston, {Logger} from 'winston'
-import {Service} from 'typedi'
+import winston, { Logger } from 'winston'
+import { Service } from 'typedi'
 
 @Service()
 export default class AppLogger {
@@ -32,7 +32,7 @@ export default class AppLogger {
   }
 
   public createChildLogger(name: string): AppLogger {
-    const childLogger: Logger = this.logger.child({moduleName: name})
+    const childLogger: Logger = this.logger.child({ moduleName: name })
 
     return new AppLogger(childLogger)
   }

@@ -1,8 +1,8 @@
-import {UserConnections} from '../../src/model/user-connections'
-import {PubSub} from '@google-cloud/pubsub'
-import {NotificationPubSub} from '../../src/pubsub/notification-pub-sub'
+import { UserConnections } from '../../src/model/user-connections'
+import { PubSub } from '@google-cloud/pubsub'
+import { NotificationPubSub } from '../../src/pubsub/notification-pub-sub'
 import AppLogger from '../../src/logger/app-logger'
-import {WebSocket} from 'ws'
+import { WebSocket } from 'ws'
 
 describe('pubsub/notification-pub-sub test', () => {
   const userConnections = new UserConnections()
@@ -29,7 +29,7 @@ describe('pubsub/notification-pub-sub test', () => {
     userConnections.add(socket)
 
     pubSubClient.topic(process.env.PUBSUB_TOPIC as string).publishMessage({
-      attributes: {eventName: 'hello', targetSsoUserIds: JSON.stringify(['123'])},
+      attributes: { eventName: 'hello', targetSsoUserIds: JSON.stringify(['123']) },
       data: Buffer.from('world'),
     })
     notificationPubSub.subscribe()

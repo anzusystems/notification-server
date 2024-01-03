@@ -1,4 +1,4 @@
-import {Message} from '@google-cloud/pubsub'
+import { Message } from '@google-cloud/pubsub'
 
 let publishedMessage: Message
 
