@@ -42,13 +42,14 @@ export class NotificationPubSub {
 
         return message.ack()
       }
-
       for (const targetSsoUserId of targetSsoUserIds) {
         for (const userConnection of this.userConnections.getAllForUser(targetSsoUserId.toString())) {
+          const data = message.data.toString()
+          this.logger.debug(`WS message sent: ${message.attributes.eventName}, ${data}`)
           userConnection.send(
             JSON.stringify({
               eventName: message.attributes.eventName as string,
-              data: message.data.toString(),
+              data: data,
             })
           )
         }
