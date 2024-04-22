@@ -15,7 +15,7 @@ export function verifyAuthorization(request: IncomingMessage, logger: AppLogger)
     throw new Error('Invalid JWT token')
   }
 
-  logger.debug('Verifying authorization tokens...', { jwt: jwtRaw, pubCert: Config.getJwtPublicKey() })
+  logger.debug('Verifying authorization tokens...', {jwt: jwtRaw, pubCert: Config.getJwtPublicKey()})
 
   return jwt.verify(jwtRaw, Config.getJwtPublicKey(), {
     algorithms: [Config.getJwtAlgorithm()],

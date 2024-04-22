@@ -1,34 +1,42 @@
 name: CI for AnzuSystems Notification-Server by Petit Press a.s. (www.sme.sk)
 
 on:
+  push:
+    branches:
+      - '**'
   pull_request:
     branches:
       - main
 
+permissions:
+  contents: read # to fetch code (actions/checkout)
+
 jobs:
-  build:
+  lint:
     strategy:
       matrix:
-        node-version:
-          - '20'
-        platform:
-          - ubuntu-latest
+        include:
+          - node-version: 20
+            docker-image: anzusystems/node:1.0.0-node20
 
-    name: Node ${{ matrix.node-version }} on ${{ matrix.platform }}
-    runs-on: ${{ matrix.platform }}
+    name: Node ${{ matrix.node-version }}
+    runs-on: ubuntu-latest
+    container:
+      image: ${{ matrix.docker-image }}
+      options: --user root
+    if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name != github.repository
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup Node
-        uses: actions/setup-node@v4
+      - name: Cache Yarn packages
+        id: yarn-cache
+        uses: actions/cache@v3
         with:
-          node-version: ${{ matrix.node-version }}
-          cache: 'yarn'
-          cache-dependency-path: 'yarn.lock'
-
-      - name: Enable corepack
-        run: corepack enable
+          path: node_modules
+          key: ${{ runner.os }}-yarn-${{ hashFiles('yarn.lock', '*/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
 
       - name: Install dependencies
         run: yarn install --immutable
