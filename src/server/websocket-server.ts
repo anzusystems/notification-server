@@ -6,6 +6,7 @@ import {Inject, Service} from 'typedi'
 import {UserConnections} from '../model/user-connections'
 import AppLogger from '../logger/app-logger'
 import {Config} from '../config/config'
+import {UserWebSocket} from '../model/user-web-socket'
 
 @Service()
 export class WebsocketServer {
@@ -49,33 +50,38 @@ export class WebsocketServer {
         return
       }
 
-      wss.handleUpgrade(request, socket, head, (ws) => {
-        ws.ssoUserId = request.ssoUserId
-        userConnections.add(ws)
-        wss.emit('connection', ws, request)
+      wss.handleUpgrade(request, socket, head, (ws: WebSocket) => {
+        const userWs = ws as UserWebSocket
+
+        userWs.ssoUserId = request.ssoUserId
+        userConnections.add(userWs)
+        wss.emit('connection', userWs, request)
       })
     })
 
-    wss.on('connection', function connection(ws) {
-      ws.isAlive = true
-      ws.on('pong', () => (ws.isAlive = true))
-      ws.on('close', () => userConnections.remove(ws))
+    wss.on('connection', function connection(ws: WebSocket) {
+      const userWs = ws as UserWebSocket
+
+      userWs.isAlive = true
+      userWs.on('pong', () => (userWs.isAlive = true))
+      userWs.on('close', () => userConnections.remove(userWs))
     })
 
     this.heartBeatInterval = setInterval(function ping() {
       for (const ws of wss.clients) {
-        if (ws.isAlive === false) {
-          userConnections.remove(ws)
-          ws.terminate()
+        const userWs = ws as UserWebSocket
+        if (userWs.isAlive === false) {
+          userConnections.remove(userWs)
+          userWs.terminate()
 
           continue
         }
 
-        ws.isAlive = false
-        ws.ping(null, false, (error) => {
+        userWs.isAlive = false
+        userWs.ping(null, false, (error) => {
           if (error) {
-            userConnections.remove(ws)
-            ws.terminate()
+            userConnections.remove(userWs)
+            userWs.terminate()
           }
         })
       }

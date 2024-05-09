@@ -30,7 +30,7 @@ export class Config {
       return Config.jwtPublicKey
     }
 
-    Config.jwtPublicKey = this.base64ToAscii(process.env.SSO_JWT_PUBLIC_KEY as string)
+    Config.jwtPublicKey = this.base64ToAscii(process.env.SSO_JWT_PUBLIC_KEY!)
 
     return Config.jwtPublicKey
   }
@@ -40,7 +40,7 @@ export class Config {
       return Config.jwtPrivateKey
     }
 
-    Config.jwtPrivateKey = this.base64ToAscii(process.env.SSO_JWT_PRIVATE_KEY as string)
+    Config.jwtPrivateKey = this.base64ToAscii(process.env.SSO_JWT_PRIVATE_KEY!)
 
     return Config.jwtPrivateKey
   }
@@ -60,7 +60,7 @@ export class Config {
       return Config.jwtCookies
     }
 
-    Config.jwtCookies = (process.env.SSO_JWT_COOKIES as string).split(',')
+    Config.jwtCookies = process.env.SSO_JWT_COOKIES!.split(',')
 
     return Config.jwtCookies
   }
@@ -80,7 +80,7 @@ export class Config {
       return Config.webSocketServerCors
     }
 
-    Config.webSocketServerCors = process.env.WEBSOCKET_SERVER_CORS as string
+    Config.webSocketServerCors = process.env.WEBSOCKET_SERVER_CORS!
 
     return Config.webSocketServerCors
   }

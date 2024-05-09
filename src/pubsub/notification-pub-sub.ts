@@ -5,8 +5,8 @@ import {UserConnections} from '../model/user-connections'
 
 @Service()
 export class NotificationPubSub {
-  private readonly topicName = process.env.PUBSUB_TOPIC as string
-  private readonly instanceName = process.env.APP_INSTANCE_NAME as string
+  private readonly topicName = process.env.PUBSUB_TOPIC!
+  private readonly instanceName = process.env.APP_INSTANCE_NAME!
   private _topic: Topic | undefined
   private _subscription: Subscription | undefined
   private readonly pubSubClient: PubSub
