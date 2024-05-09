@@ -5,13 +5,6 @@ import AppLogger from './logger/app-logger'
 import {Container} from 'typedi'
 import {WebsocketServer} from './server/websocket-server'
 
-declare module 'ws' {
-  interface WebSocket {
-    isAlive: boolean
-    ssoUserId: string
-  }
-}
-
 declare module 'http' {
   interface IncomingMessage {
     ssoUserId: string

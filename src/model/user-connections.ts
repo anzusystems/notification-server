@@ -1,24 +1,24 @@
 import {Service} from 'typedi'
-import {WebSocket} from 'ws'
+import {UserWebSocket} from './user-web-socket'
 
 @Service({global: true})
 export class UserConnections {
-  private readonly users: Map<string, Set<WebSocket>> = new Map<string, Set<WebSocket>>()
+  private readonly users: Map<string, Set<UserWebSocket>> = new Map<string, Set<UserWebSocket>>()
 
-  add(socket: WebSocket): void {
+  add(socket: UserWebSocket): void {
     const userSockets = this.users.get(socket.ssoUserId)
-    if (userSockets && userSockets.add(socket)) {
+    if (userSockets?.add(socket)) {
       return
     }
 
-    this.users.set(socket.ssoUserId, new Set<WebSocket>().add(socket))
+    this.users.set(socket.ssoUserId, new Set<UserWebSocket>().add(socket))
   }
 
-  remove(socket: WebSocket): void {
+  remove(socket: UserWebSocket): void {
     this.users.get(socket.ssoUserId)?.delete(socket)
   }
 
-  getAllForUser(ssoUserId: string): Set<WebSocket> {
-    return this.users.get(ssoUserId) ?? new Set<WebSocket>()
+  getAllForUser(ssoUserId: string): Set<UserWebSocket> {
+    return this.users.get(ssoUserId) ?? new Set<UserWebSocket>()
   }
 }

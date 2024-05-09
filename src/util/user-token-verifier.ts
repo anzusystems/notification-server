@@ -10,6 +10,8 @@ export function verifyAuthorization(request: IncomingMessage, logger: AppLogger)
   const jwtRaw = Config.getJwtCookies()
     .map((cookieName) => cookies.get(cookieName))
     .join('.')
+
+  // eslint-disable-next-line unicorn/prefer-string-replace-all
   const jwtPartsCount = jwtRaw.replace(/[^.]/gi, '').length
   if (!jwtRaw || jwtPartsCount !== 2) {
     throw new Error('Invalid JWT token')
