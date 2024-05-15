@@ -1,7 +1,7 @@
 import { Message, PubSub, Subscription, Topic } from '@google-cloud/pubsub'
-import AppLogger from '../logger/app-logger'
+import AppLogger from '@/logger/app-logger'
 import { Inject, Service } from 'typedi'
-import { UserConnections } from '../model/user-connections'
+import { UserConnections } from '@/model/user-connections'
 
 @Service()
 export class NotificationPubSub {

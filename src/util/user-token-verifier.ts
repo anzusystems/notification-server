@@ -1,9 +1,9 @@
 import jwt from 'jsonwebtoken'
-import { Config } from '../config/config'
+import { Config } from '@/config/config'
 import Cookies from 'cookies'
 import { IncomingMessage, ServerResponse } from 'http'
-import { IUserToken } from '../model/user-token'
-import AppLogger from '../logger/app-logger'
+import { IUserToken } from '@/model/user-token'
+import AppLogger from '@/logger/app-logger'
 
 export function verifyAuthorization(request: IncomingMessage, logger: AppLogger): IUserToken {
   const cookies = new Cookies(request, new ServerResponse(request))

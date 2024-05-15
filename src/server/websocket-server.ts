@@ -1,11 +1,11 @@
 import http, { IncomingMessage, Server } from 'http'
 import WebSocket from 'ws'
 import stream from 'node:stream'
-import { verifyAuthorization } from '../util/user-token-verifier'
+import { verifyAuthorization } from '@/util/user-token-verifier'
 import { Inject, Service } from 'typedi'
-import { UserConnections } from '../model/user-connections'
-import AppLogger from '../logger/app-logger'
-import { Config } from '../config/config'
+import { UserConnections } from '@/model/user-connections'
+import AppLogger from '@/logger/app-logger'
+import { Config } from '@/config/config'
 
 // todo, better types - remove as
 
