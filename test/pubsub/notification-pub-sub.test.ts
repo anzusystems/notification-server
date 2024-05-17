@@ -1,7 +1,7 @@
-import { UserConnections } from '../../src/model/user-connections'
+import { UserConnections } from '@/model/user-connections'
 import { PubSub } from '@google-cloud/pubsub'
-import { NotificationPubSub } from '../../src/pubsub/notification-pub-sub'
-import AppLogger from '../../src/logger/app-logger'
+import { NotificationPubSub } from '@/pubsub/notification-pub-sub'
+import AppLogger from '@/logger/app-logger'
 import { WebSocket } from 'ws'
 
 describe('pubsub/notification-pub-sub test', () => {

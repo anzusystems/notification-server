@@ -1,6 +1,6 @@
 import 'reflect-metadata'
 import { initPubSubMock } from './_mock/mq'
-import { Config } from '../src/config/config'
+import { Config } from '@/config/config'
 
 Config.loadEnv('test')
 

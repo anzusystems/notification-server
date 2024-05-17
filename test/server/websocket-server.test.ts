@@ -1,8 +1,8 @@
 import { WebSocket } from 'ws'
-import { WebsocketServer } from '../../src/server/websocket-server'
-import { UserConnections } from '../../src/model/user-connections'
-import { Config } from '../../src/config/config'
-import AppLogger from '../../src/logger/app-logger'
+import { WebsocketServer } from '@/server/websocket-server'
+import { UserConnections } from '@/model/user-connections'
+import { Config } from '@/config/config'
+import AppLogger from '@/logger/app-logger'
 import jwt from 'jsonwebtoken'
 
 class WebSocketClient extends WebSocket {
