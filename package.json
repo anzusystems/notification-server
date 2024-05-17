@@ -25,7 +25,8 @@
     "production": "yarn build",
     "prod": "NODE_OPTIONS=\"--max-old-space-size=200\" node dist/index.js --max-http-header-size=16000",
     "dev": "TS_NODE=true NODE_OPTIONS=\"-r ts-node/register\" node src/index.ts --max-http-header-size=16000",
-    "watch": "nodemon --watch src -e ts --exec yarn dev"
+    "watch": "nodemon --watch src -e ts --exec yarn dev",
+    "test": "jest --coverage=true --runInBand"
   },
   "dependencies": {
     "@google-cloud/pubsub": "^4.1.1",
