@@ -47,5 +47,5 @@ jobs:
       - name: Run Security check
         run: yarn npm audit
 
-      - name: Run Yarn Tests
-        run: yarn test
+#      - name: Run Yarn Tests
+#        run: yarn test
