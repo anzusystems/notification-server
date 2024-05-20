@@ -1,4 +1,4 @@
-import { UserConnections } from '../../src/model/user-connections'
+import { UserConnections } from '@/model/user-connections'
 import { WebSocket } from 'ws'
 
 describe('model/user-connections test', () => {

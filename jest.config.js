@@ -18,4 +18,7 @@ module.exports = {
   ],
   verbose: true,
   setupFiles: ['<rootDir>/test/setup-tests.ts'],
+  moduleNameMapper: {
+    '@/(.*)': '<rootDir>/src/$1'
+  },
 }
