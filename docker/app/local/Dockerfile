@@ -1,4 +1,4 @@
-FROM anzusystems/node:1.0.0-node20-nginx
+FROM anzusystems/node:1.1.0-node20-nginx
 
 #
 ### Basic arguments and variables
