@@ -1,4 +1,3 @@
-// eslint-disable-next-line unicorn/prefer-module,no-undef
 module.exports = {
   preset: 'ts-jest',
   testEnvironment: 'node',
@@ -19,6 +18,6 @@ module.exports = {
   verbose: true,
   setupFiles: ['<rootDir>/test/setup-tests.ts'],
   moduleNameMapper: {
-    '@/(.*)': '<rootDir>/src/$1'
+    '@/(.*)': '<rootDir>/src/$1',
   },
 }
