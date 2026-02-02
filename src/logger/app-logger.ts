@@ -51,19 +51,31 @@ export default class AppLogger {
       formats.push(winston.format.colorize())
     }
 
+    interface LogInfo extends winston.Logform.TransformableInfo {
+      timestamp?: string
+      moduleName?: string
+      metadata: {
+        error?: {
+          stack?: string
+        }
+        [key: string]: unknown
+      }
+    }
+
     formats.push(
       winston.format.printf((info) => {
-        let out = `${info.timestamp} [${info.moduleName || 'app'}] ${info.level}: ${info.message}`
-        if (info.metadata.error) {
-          out = out + ' ' + info.metadata.error
-          if (info.metadata.error.stack) {
-            out = out + ' ' + info.metadata.error.stack
+        const logInfo = info as LogInfo
+        let out = `${logInfo.timestamp} [${logInfo.moduleName || 'app'}] ${logInfo.level}: ${logInfo.message}`
+        if (logInfo.metadata.error) {
+          out = out + ' ' + logInfo.metadata.error
+          if (logInfo.metadata.error.stack) {
+            out = out + ' ' + logInfo.metadata.error.stack
           }
-          delete info.metadata.error
+          delete logInfo.metadata.error
         }
 
-        if (info.metadata && Object.keys(info.metadata).length > 0) {
-          out = out + ' ' + JSON.stringify(info.metadata)
+        if (logInfo.metadata && Object.keys(logInfo.metadata).length > 0) {
+          out = out + ' ' + JSON.stringify(logInfo.metadata)
         }
 
         return out
