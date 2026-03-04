@@ -16,7 +16,7 @@
   },
   "main": "dist/index.js",
   "scripts": {
-    "ci": "run-s --print-name lint:tsc lint:eslint",
+    "ci": "yarn lint:tsc && yarn lint:eslint",
     "lint": "yarn ci",
     "lint:eslint": "eslint .",
     "lint:eslint:fix": "eslint . --fix",
