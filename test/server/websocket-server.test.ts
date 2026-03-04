@@ -59,8 +59,6 @@ describe('server/websocket-server test', () => {
     })
     const userConnection = userConnections.getAllForUser('123')
     expect(userConnection.size).toEqual(1)
-    const socket = userConnection.values().next().value
-    expect(socket).toBeDefined()
-    socket!.send('hello')
+    userConnection.values().next().value?.send('hello')
   })
 })
