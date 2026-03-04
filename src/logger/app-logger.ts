@@ -53,17 +53,19 @@ export default class AppLogger {
 
     formats.push(
       winston.format.printf((info) => {
-        let out = `${info.timestamp} [${info.moduleName || 'app'}] ${info.level}: ${info.message}`
-        if (info.metadata.error) {
-          out = out + ' ' + info.metadata.error
-          if (info.metadata.error.stack) {
-            out = out + ' ' + info.metadata.error.stack
+        const metadata = info.metadata as Record<string, unknown> | undefined
+        let out = `${info.timestamp} [${info.moduleName ?? 'app'}] ${info.level}: ${info.message}`
+        if (metadata?.error) {
+          const error = metadata.error as Error
+          out = out + ' ' + error
+          if (error.stack) {
+            out = out + ' ' + error.stack
           }
-          delete info.metadata.error
+          delete metadata.error
         }
 
-        if (info.metadata && Object.keys(info.metadata).length > 0) {
-          out = out + ' ' + JSON.stringify(info.metadata)
+        if (metadata && Object.keys(metadata).length > 0) {
+          out = out + ' ' + JSON.stringify(metadata)
         }
 
         return out
