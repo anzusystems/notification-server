@@ -1536,7 +1536,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@typescript-eslint/eslint-plugin@npm:8.56.1, @typescript-eslint/eslint-plugin@npm:^8.56.1":
+"@typescript-eslint/eslint-plugin@npm:8.56.1":
   version: 8.56.1
   resolution: "@typescript-eslint/eslint-plugin@npm:8.56.1"
   dependencies:
@@ -1556,7 +1556,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@typescript-eslint/parser@npm:8.56.1, @typescript-eslint/parser@npm:^8.56.1":
+"@typescript-eslint/parser@npm:8.56.1":
   version: 8.56.1
   resolution: "@typescript-eslint/parser@npm:8.56.1"
   dependencies:
@@ -4711,8 +4711,6 @@ __metadata:
     "@types/jsonwebtoken": "npm:^9.0.10"
     "@types/node": "npm:^25.3.3"
     "@types/ws": "npm:^8.18.1"
-    "@typescript-eslint/eslint-plugin": "npm:^8.56.1"
-    "@typescript-eslint/parser": "npm:^8.56.1"
     cookies: "npm:^0.9.1"
     dotenv: "npm:^17.3.1"
     eslint: "npm:^10.0.2"
