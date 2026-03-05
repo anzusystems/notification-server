@@ -1,6 +1,6 @@
 import dotenv from 'dotenv'
 import process from 'process'
-import {Algorithm} from 'jsonwebtoken'
+import { Algorithm } from 'jsonwebtoken'
 
 export class Config {
   private static jwtPublicKey: string
@@ -21,7 +21,7 @@ export class Config {
     if (environmentType !== '') {
       environmentFile = `${environmentFile}.${environmentType}`
     }
-    dotenv.config({path: environmentFile})
+    dotenv.config({ path: environmentFile })
     Config.envLoaded = true
   }
 

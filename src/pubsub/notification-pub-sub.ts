@@ -1,7 +1,7 @@
-import {Message, PubSub, Subscription, Topic} from '@google-cloud/pubsub'
-import AppLogger from '../logger/app-logger'
-import {Inject, Service} from 'typedi'
-import {UserConnections} from '../model/user-connections'
+import { Message, PubSub, Subscription, Topic } from '@google-cloud/pubsub'
+import AppLogger from '@/logger/app-logger'
+import { Inject, Service } from 'typedi'
+import { UserConnections } from '@/model/user-connections'
 
 @Service()
 export class NotificationPubSub {
@@ -27,7 +27,7 @@ export class NotificationPubSub {
       this.logger.debug(`Message received with attributes: ${JSON.stringify(message.attributes)}`)
 
       if (!message?.attributes.eventName) {
-        this.logger.error(`Unsupported Pub/Sub message. Missing eventName in header.`)
+        this.logger.error('Unsupported Pub/Sub message. Missing eventName in header.')
 
         return message.ack()
       }
@@ -38,17 +38,18 @@ export class NotificationPubSub {
       }
 
       if (!Array.isArray(targetSsoUserIds) || targetSsoUserIds.length === 0) {
-        this.logger.error(`Unsupported Pub/Sub message. Missing targetSsoUserIds in header.`)
+        this.logger.error('Unsupported Pub/Sub message. Missing targetSsoUserIds in header.')
 
         return message.ack()
       }
-
       for (const targetSsoUserId of targetSsoUserIds) {
         for (const userConnection of this.userConnections.getAllForUser(targetSsoUserId.toString())) {
+          const data = message.data.toString()
+          this.logger.debug(`WS message sent: ${message.attributes.eventName}, ${data}`)
           userConnection.send(
             JSON.stringify({
               eventName: message.attributes.eventName as string,
-              data: message.data.toString(),
+              data: data,
             })
           )
         }
@@ -97,7 +98,7 @@ export class NotificationPubSub {
     }
 
     const [subscription] = await this.pubSubClient.createSubscription(topic, subscriptionName, {
-      expirationPolicy: {ttl: {seconds: 3600 * 24}},
+      expirationPolicy: { ttl: { seconds: 3600 * 24 } },
       enableMessageOrdering: true,
     })
     this.logger.debug(`Subscription "${subscriptionName}" has been created successfully.`)

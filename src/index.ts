@@ -1,9 +1,17 @@
 import 'reflect-metadata'
-import {Config} from './config/config'
-import {NotificationPubSub} from './pubsub/notification-pub-sub'
-import AppLogger from './logger/app-logger'
-import {Container} from 'typedi'
-import {WebsocketServer} from './server/websocket-server'
+import { Container } from 'typedi'
+import ws from 'ws'
+import AppLogger from '@/logger/app-logger'
+import { Config } from '@/config/config'
+import { NotificationPubSub } from '@/pubsub/notification-pub-sub'
+import { WebsocketServer } from '@/server/websocket-server'
+
+declare module 'ws' {
+  export interface WebSocket extends ws {
+    isAlive: boolean
+    ssoUserId: string
+  }
+}
 
 declare module 'http' {
   interface IncomingMessage {

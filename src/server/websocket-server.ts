@@ -1,12 +1,13 @@
-import http, {IncomingMessage, Server} from 'http'
+import http, { IncomingMessage, Server } from 'http'
 import WebSocket from 'ws'
 import stream from 'node:stream'
-import {verifyAuthorization} from '../util/user-token-verifier'
-import {Inject, Service} from 'typedi'
-import {UserConnections} from '../model/user-connections'
-import AppLogger from '../logger/app-logger'
-import {Config} from '../config/config'
-import {UserWebSocket} from '../model/user-web-socket'
+import { verifyAuthorization } from '@/util/user-token-verifier'
+import { Inject, Service } from 'typedi'
+import { UserConnections } from '@/model/user-connections'
+import AppLogger from '@/logger/app-logger'
+import { Config } from '@/config/config'
+
+// todo, better types - remove as
 
 @Service()
 export class WebsocketServer {
@@ -23,7 +24,7 @@ export class WebsocketServer {
       noServer: true,
       path: '/ws',
       perMessageDeflate: true,
-      verifyClient: ({origin}, callback) => {
+      verifyClient: ({ origin }, callback) => {
         const isAllowed = new RegExp(Config.getWebSocketServerCors()).test(origin)
         if (!isAllowed) {
           appLogger.warn(`Request from origin ${origin} blocked`)
@@ -50,38 +51,35 @@ export class WebsocketServer {
         return
       }
 
-      wss.handleUpgrade(request, socket, head, (ws: WebSocket) => {
-        const userWs = ws as UserWebSocket
-
-        userWs.ssoUserId = request.ssoUserId
-        userConnections.add(userWs)
-        wss.emit('connection', userWs, request)
+      wss.handleUpgrade(request, socket, head, (ws) => {
+        const cws = ws as WebSocket.WebSocket
+        cws.ssoUserId = request.ssoUserId
+        userConnections.add(cws)
+        wss.emit('connection', cws, request)
       })
     })
 
-    wss.on('connection', function connection(ws: WebSocket) {
-      const userWs = ws as UserWebSocket
-
-      userWs.isAlive = true
-      userWs.on('pong', () => (userWs.isAlive = true))
-      userWs.on('close', () => userConnections.remove(userWs))
+    wss.on('connection', function connection(ws: WebSocket.WebSocket) {
+      ws.isAlive = true
+      ws.on('pong', () => (ws.isAlive = true))
+      ws.on('close', () => userConnections.remove(ws))
     })
 
     this.heartBeatInterval = setInterval(function ping() {
       for (const ws of wss.clients) {
-        const userWs = ws as UserWebSocket
-        if (userWs.isAlive === false) {
-          userConnections.remove(userWs)
-          userWs.terminate()
+        const cws = ws as WebSocket.WebSocket
+        if (cws.isAlive === false) {
+          userConnections.remove(cws)
+          ws.terminate()
 
           continue
         }
 
-        userWs.isAlive = false
-        userWs.ping(null, false, (error) => {
+        cws.isAlive = false
+        cws.ping(null, false, (error) => {
           if (error) {
-            userConnections.remove(userWs)
-            userWs.terminate()
+            userConnections.remove(cws)
+            ws.terminate()
           }
         })
       }

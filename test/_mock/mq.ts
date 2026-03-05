@@ -1,4 +1,4 @@
-import {Message} from '@google-cloud/pubsub'
+import { Message } from '@google-cloud/pubsub'
 
 let publishedMessage: Message
 
@@ -17,7 +17,6 @@ export const pubSubTopicMock = jest.fn().mockImplementation(() => ({
 
 export const pubSubSubscriptionMock = jest.fn().mockImplementation(() => ({
   on: jest.fn().mockImplementation((test: string, function_: (asd: Message) => void) => {
-    // eslint-disable-next-line @typescript-eslint/no-empty-function
     publishedMessage.ack = (): void => {}
     function_(publishedMessage)
   }),
