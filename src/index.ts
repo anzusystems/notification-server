@@ -32,5 +32,4 @@ const init = async () => {
   Container.get(WebsocketServer).init()
 }
 
-// eslint-disable-next-line unicorn/prefer-top-level-await
 init().catch((error: Error) => console.error(error))
