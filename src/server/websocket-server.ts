@@ -6,8 +6,7 @@ import { Inject, Service } from 'typedi'
 import { UserConnections } from '@/model/user-connections'
 import AppLogger from '@/logger/app-logger'
 import { Config } from '@/config/config'
-
-// todo, better types - remove as
+import { UserWebSocket } from '@/model/user-web-socket'
 
 @Service()
 export class WebsocketServer {
@@ -52,10 +51,10 @@ export class WebsocketServer {
       }
 
       wss.handleUpgrade(request, socket, head, (ws) => {
-        const cws = ws as WebSocket.WebSocket
-        cws.ssoUserId = request.ssoUserId
-        userConnections.add(cws)
-        wss.emit('connection', cws, request)
+        const userWs = ws as UserWebSocket
+        userWs.ssoUserId = request.ssoUserId
+        userConnections.add(userWs)
+        wss.emit('connection', userWs, request)
       })
     })
 
@@ -66,19 +65,19 @@ export class WebsocketServer {
     })
 
     this.heartBeatInterval = setInterval(function ping() {
-      for (const ws of wss.clients) {
-        const cws = ws as WebSocket.WebSocket
-        if (cws.isAlive === false) {
-          userConnections.remove(cws)
+      for (const client of wss.clients) {
+        const ws = client as UserWebSocket
+        if (ws.isAlive === false) {
+          userConnections.remove(ws)
           ws.terminate()
 
           continue
         }
 
-        cws.isAlive = false
-        cws.ping(null, false, (error) => {
+        ws.isAlive = false
+        ws.ping(null, false, (error) => {
           if (error) {
-            userConnections.remove(cws)
+            userConnections.remove(ws)
             ws.terminate()
           }
         })
