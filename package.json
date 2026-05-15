@@ -27,8 +27,8 @@
     "clean": "rimraf dist",
     "build": "yarn clean && yarn lint && tsc && tsc-alias",
     "production": "yarn build",
-    "prod": "NODE_OPTIONS=\"--max-old-space-size=200\" node dist/src/index.js --max-http-header-size=16000",
-    "dev": "TS_NODE=true NODE_OPTIONS=\"-r ts-node/register\" node src/index.ts --max-http-header-size=16000",
+    "prod": "NODE_OPTIONS=\"--max-old-space-size=200 --max-http-header-size=65536\" node dist/src/index.js",
+    "dev": "TS_NODE=true NODE_OPTIONS=\"-r ts-node/register --max-http-header-size=65536\" node src/index.ts",
     "watch": "nodemon --watch src -e ts --exec yarn dev",
     "test": "jest --coverage=true --runInBand"
   },
