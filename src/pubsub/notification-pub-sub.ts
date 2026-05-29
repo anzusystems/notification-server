@@ -7,8 +7,8 @@ import { UserConnections } from '@/model/user-connections'
 export class NotificationPubSub {
   private readonly topicName = process.env.PUBSUB_TOPIC!
   private readonly instanceName = process.env.APP_INSTANCE_NAME!
-  private _topic: Topic | undefined
-  private _subscription: Subscription | undefined
+  private cachedTopic: Topic | undefined
+  private cachedSubscription: Subscription | undefined
   private readonly pubSubClient: PubSub
 
   constructor(
@@ -63,8 +63,8 @@ export class NotificationPubSub {
    * Creates a topic or retrieve existing.
    */
   private async topic(): Promise<Topic> {
-    if (this._topic) {
-      return this._topic
+    if (this.cachedTopic) {
+      return this.cachedTopic
     }
 
     const existingTopic = this.pubSubClient.topic(this.topicName)
@@ -78,14 +78,14 @@ export class NotificationPubSub {
     const [topic] = await this.pubSubClient.createTopic(this.topicName)
     this.logger.debug(`Topic "${this.topicName}" has been created successfully.`)
 
-    this._topic = topic
+    this.cachedTopic = topic
 
     return topic
   }
 
   private async subscription(topic: Topic): Promise<Subscription> {
-    if (this._subscription) {
-      return this._subscription
+    if (this.cachedSubscription) {
+      return this.cachedSubscription
     }
 
     const subscriptionName = `${this.topicName}_${this.instanceName}`
@@ -103,12 +103,12 @@ export class NotificationPubSub {
     })
     this.logger.debug(`Subscription "${subscriptionName}" has been created successfully.`)
 
-    this._subscription = subscription
+    this.cachedSubscription = subscription
 
     return subscription
   }
 
   public async close() {
-    await this._subscription?.close()
+    await this.cachedSubscription?.close()
   }
 }
